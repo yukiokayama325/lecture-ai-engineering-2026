@@ -34,13 +34,21 @@ def main() -> None:
 
     question = args.question
     while True:
+        print(f"[質問] {question}\n")
+        try:
+            print(ask(question, chat))
+        except errors.APIError as e:
+            print(api_error_message(e.code, e.message))
+            raise SystemExit(1)
         try:
             question = input("次の質問（exitで終了）: ").strip()
         except (EOFError, KeyboardInterrupt):
             print("\n終了します。")
             break
+        
         if question.lower() == "exit":
             break
+
         while not question:
             question = input("質問を入力してください: ").strip()
             if question.lower() == "exit":
